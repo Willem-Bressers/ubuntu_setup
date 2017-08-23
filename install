@@ -39,7 +39,9 @@ if [ "$UBUNTU_SETUP_INIT" == "true" ]; then
 
 	mkdir -p $project_home
 	echo "alias cdp='cd $project_home'" >> ~/.bash_aliases
-	echo "alias logout-gnome=\"gnome-session-quit --force\"" >> ~/.bash_aliases
+	echo "alias logout=\"gnome-session-quit --force\"" >> ~/.bash_aliases
+	echo "alias poweroff=\"gnome-session-quit --power-off\"" >> ~/.bash_aliases
+	echo "alias reboot=\"gnome-session-quit --reboot\"" >> ~/.bash_aliases
 
 	logout
 fi
