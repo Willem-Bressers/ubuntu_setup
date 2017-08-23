@@ -41,3 +41,4 @@ git clone https://github.com/pjreddie/darknet.git
 cd darknet
 make
 mkdir -p obj
+wget https://pjreddie.com/media/files/yolo.weights
