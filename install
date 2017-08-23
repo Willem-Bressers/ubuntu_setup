@@ -42,6 +42,7 @@ if [ "$UBUNTU_SETUP_INIT" == "true" ]; then
 	echo "alias logout=\"gnome-session-quit --force\"" >> ~/.bash_aliases
 	echo "alias poweroff=\"gnome-session-quit --power-off\"" >> ~/.bash_aliases
 	echo "alias reboot=\"gnome-session-quit --reboot\"" >> ~/.bash_aliases
+	echo "alias lock=\"gnome-screensaver-command --lock\"" >> ~/.bash_aliases
 
 	logout
 fi
