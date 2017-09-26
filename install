@@ -45,7 +45,7 @@ if [ "$UBUNTU_SETUP_INIT" == "true" ]; then
 	echo "UBUNTU_SETUP_INIT=\"true\"" >> ~/.pam_environment
 	echo "UBUNTU_SETUP_EMAIL=\"$email\"" >> ~/.pam_environment
 	echo "UBUNTU_SETUP_NAME=\"$name\"" >> ~/.pam_environment
-	echo "UBUNTU_SETUP_PROJECT_HOME=\"$project_home\"" >> ~/.pam_environment
+	echo "UBUNTU_SETUP_PROJECT_HOME=$project_home" >> ~/.pam_environment
 
 	mkdir -p $project_home
 	echo "alias cdp='cd $project_home'" >> ~/.bash_aliases
@@ -155,9 +155,9 @@ if [ "${answer}" == "y" ] ; then
 	pip install --user virtualenvwrapper
 
 	# set the environment variables
-	echo "WORKON_HOME=\"$HOME/.virtualenvs\"" >> ~/.pam_environment
+	echo "WORKON_HOME=$HOME/.virtualenvs" >> ~/.pam_environment
 	echo "PROJECT_HOME=$UBUNTU_SETUP_PROJECT_HOME"  >> ~/.pam_environment
-	#echo "VIRTUALENVWRAPPER_PYTHON=\"/usr/bin/python3\"" >> ~/.bash_profile
+	echo "VIRTUALENV_PYTHON=$(which python3)" >> ~/.pam_environment
 	echo source $HOME/.local/bin/virtualenvwrapper.sh >> ~/.bashrc
 	source ~/.bashrc
 fi
@@ -167,12 +167,21 @@ if [ "${answer}" == "y" ] ; then
 	echo "*** Installing RStudio server ***"
 
 	# install R
+	sudo add-apt-repository "deb http://cran-mirror.cs.uu.nl/bin/linux/ubuntu xenial/"
+	sudo apt-get update
 	sudo apt-get install -y r-base
+	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
 
 	# install RStudio Server
 	sudo apt-get install -y gdebi-core
 	wget https://download2.rstudio.org/rstudio-server-1.0.153-amd64.deb
 	sudo gdebi rstudio-server-1.0.153-amd64.deb
+
+	# install Rjava
+	sudo apt-get install default-jdk
+	sudo R CMD javareconf
+	sudo apt-get install r-cran-rjava
+	sudo apt-get install libgdal1-dev libproj-dev
 
 	echo "*** see: http://127.0.0.1:8787 ***"
 fi
