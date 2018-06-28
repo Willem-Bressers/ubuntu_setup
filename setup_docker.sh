@@ -13,6 +13,6 @@ sudo systemctl enable docker
 # sudo apt-get update
 
 # sudo apt-get install -y docker-ce
-# sudo usermod -aG docker ${USER}
+sudo usermod -aG docker ${USER}
 
 # su - ${USER}
