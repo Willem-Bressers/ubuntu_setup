@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#! /bin/bash
 
 apt install -y curl gnupg apt-transport-https libcurl3
 

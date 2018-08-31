@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#! /bin/bash
 
 wget -O $HOME/Downloads/visual_studio_code.deb https://go.microsoft.com/fwlink/?LinkID=760868
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#! /bin/bash
 
 sudo apt install -y libxss1 libgconf-2-4 libunwind8
 
