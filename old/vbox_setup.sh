@@ -1,6 +1,12 @@
 #! /bin/bash
 
 # =============================================================================
+# INSTALL VIM
+# =============================================================================
+sudo apt install -y vim
+
+
+# =============================================================================
 # SETUP BASH
 # =============================================================================
 if [ ! -f ~/.bash_aliases ]; then
@@ -20,19 +26,19 @@ fi
 # =============================================================================
 sudo apt install -y git
 
+read -p "Email: (dhr.bressers@gmail.com)? " email; email=${email:-"dhr.bressers@gmail.com"}
+read -p "Name: (Willem Bressers)? " name; name=${name:-"Willem Bressers"}
+
 if [ ! -f ~/.gitignore ]; then
 	touch ~/.gitignore
 fi
 
 if [ ! -f ~/.ssh/id_rsa.pub ]; then
-	read -p "Email: (dhr.bressers@gmail.com)? " email; email=${email:-"dhr.bressers@gmail.com"}
 	ssh-keygen -t rsa -b 4096 -C $email
 	cat ~/.ssh/id_rsa.pub
 fi
 
 if [ ! -f ~/.gitconfig ]; then
-	read -p "Email: (dhr.bressers@gmail.com)? " email; email=${email:-"dhr.bressers@gmail.com"}
-	read -p "Name: (Willem Bressers)? " name; name=${name:-"Willem Bressers"}
 	git config --global user.email $email
 	git config --global user.name $name
 	git config --global push.default simple
@@ -50,10 +56,17 @@ fi
 # =============================================================================
 # SETUP PYTHON
 # =============================================================================
-sudo apt install -y python3-pip python3-distutils
+if [ ! -d $HOME/.virtualenvs ]; then
+	# download & install pip
+	sudo apt install -y python3-pip python3-distutils
 
-sudo pip3 install virtualenv virtualenvwrapper
+	# install python libraries
+	sudo pip3 install virtualenv virtualenvwrapper
 
-echo -e "\n# virtualenv and virtualenvwrapper" >> ~/.bashrc
-echo "export WORKON_HOME=$HOME/.virtualenvs" >> ~/.bashrc
-echo "source /usr/local/bin/virtualenvwrapper.sh" >> ~/.bashrc
+	# update our  ~/.bashrc  file
+	echo -e "\n# virtualenv and virtualenvwrapper" >> ~/.bashrc
+	echo "export WORKON_HOME=$HOME/.virtualenvs" >> ~/.bashrc
+	echo "export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3" >> ~/.bashrc
+	echo "source /usr/local/bin/virtualenvwrapper.sh" >> ~/.bashrc
+	source ~/.bashrc
+fi
