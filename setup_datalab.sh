@@ -3,7 +3,7 @@
 # =============================================================================
 # Ubuntu packages
 # =============================================================================
-sudo apt install -y vim git python3-pip python3-distutils
+sudo apt install -y vim git python3-pip python3-distutils nodejs npm
 sudo apt autoremove -y
 
 
@@ -49,6 +49,13 @@ if [ ! -f ~/.ssh/id_rsa.pub ]; then
 		\tgit branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 	}" >> ~/.bashrc
 	echo "PS1=\"\[\033[01;32m\]\u\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]:\[\033[33m\]\$(parse_git_branch)\[\033[00m\]$ \"" >> ~/.bashrc
+fi
+
+if [ ! -f ~/.ssh/config ]; then
+	touch ~/.ssh/config
+	read -p "Axians server login name: (willem)? " name; name=${name:-"willem"}
+	echo -e "Host axians\n\tHostname 10.249.153.16\n\tUser $name\n" >> ~/.ssh/config
+	chmod 600 ~/.ssh/config
 fi
 
 # =============================================================================
