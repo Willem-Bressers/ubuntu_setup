@@ -42,6 +42,7 @@ sudo make install
 # Clone .so file to environment
 # =============================================================================
 sudo ln -s /usr/local/lib/python3.6/dist-packages/cv2/python-3.6/cv2.cpython-36m-x86_64-linux-gnu.so /home/willem/.virtualenvs/dfg_bouquet_quality/lib/python3.6/site-packages/cv2.so
+# cp /usr/local/lib/python3.6/dist-packages/cv2/python-3.6/cv2.cpython-36m-x86_64-linux-gnu.so /home/willem/.virtualenvs/solarchallenge/lib/python3.6/site-packages/cv2.so
 
 # =============================================================================
 # verify 
