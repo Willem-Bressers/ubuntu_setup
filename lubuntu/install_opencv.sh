@@ -49,6 +49,7 @@ if [ ! -d /var/tmp/opencv_contrib-$OPENCV_VERSION ]; then
 	rm /var/tmp/opencv_contrib.tar.gz
 fi
 
+
 # =============================================================================
 # Building OpenCV from Source Using CMake
 # =============================================================================
@@ -63,7 +64,7 @@ if [ ! -f /var/tmp/opencv-$OPENCV_VERSION/build/Makefile ]; then
 	cd /var/tmp/opencv-$OPENCV_VERSION/build
 	cmake -D CMAKE_BUILD_TYPE=RELEASE \
     	-D CMAKE_INSTALL_PREFIX=/usr/local \
-    	-D OPENCV_EXTRA_MODULES_PATH=/var/tmp/opencv_contrib-$OPENCV_VERSION/modules 
+    	-D OPENCV_EXTRA_MODULES_PATH=/var/tmp/opencv_contrib-$OPENCV_VERSION/modules \
 		-D INSTALL_C_EXAMPLES=OFF \
 	    -D INSTALL_PYTHON_EXAMPLES=OFF \
 	    -D BUILD_EXAMPLES=OFF \
@@ -72,7 +73,7 @@ if [ ! -f /var/tmp/opencv-$OPENCV_VERSION/build/Makefile ]; then
 	    -D BUILD_TESTS=OFF \
 	    -D WITH_TBB=ON \
 	    -D WITH_OPENMP=ON \
-	    -D WITH_IPP=ON
+	    -D WITH_IPP=ON \
 	    -D WITH_NVCUVID=ON \
 	    -D WITH_CUDA=OFF \
 		-D WITH_CSTRIPES=ON \
@@ -80,9 +81,17 @@ if [ ! -f /var/tmp/opencv-$OPENCV_VERSION/build/Makefile ]; then
 	    ..
 fi
 
-# build as fast as possible utilizing all processors
+# Compiling OpenCV
 if [ -d /var/tmp/opencv-$OPENCV_VERSION/build/bin/ ] && [ -z "$(ls -A /var/tmp/opencv-$OPENCV_VERSION/build/bin/)" ]; then
-# NR_PROCESSORS=$(nproc)
 	cd /var/tmp/opencv-$OPENCV_VERSION/build
+	
+	# utilizing all processors
 	make -j$(nproc)
 fi 
+
+# Installing OpenCV
+if [ ! -f /usr/local/bin/opencv_version ]; then
+	cd /var/tmp/opencv-$OPENCV_VERSION/build
+	sudo make install
+fi
+
