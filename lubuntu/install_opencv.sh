@@ -63,22 +63,22 @@ fi
 if [ ! -f /var/tmp/opencv-$OPENCV_VERSION/build/Makefile ]; then
 	cd /var/tmp/opencv-$OPENCV_VERSION/build
 	cmake -D CMAKE_BUILD_TYPE=RELEASE \
-    	-D CMAKE_INSTALL_PREFIX=/usr/local \
-    	-D OPENCV_EXTRA_MODULES_PATH=/var/tmp/opencv_contrib-$OPENCV_VERSION/modules \
+		-D CMAKE_INSTALL_PREFIX=/usr/local \
+		-D OPENCV_EXTRA_MODULES_PATH=/var/tmp/opencv_contrib-$OPENCV_VERSION/modules \
 		-D INSTALL_C_EXAMPLES=OFF \
-	    -D INSTALL_PYTHON_EXAMPLES=OFF \
-	    -D BUILD_EXAMPLES=OFF \
-	    -D BUILD_DOCS=OFF \
-	    -D BUILD_PERF_TESTS=OFF \
-	    -D BUILD_TESTS=OFF \
-	    -D WITH_TBB=ON \
-	    -D WITH_OPENMP=ON \
-	    -D WITH_IPP=ON \
-	    -D WITH_NVCUVID=ON \
-	    -D WITH_CUDA=OFF \
+		-D INSTALL_PYTHON_EXAMPLES=OFF \
+		-D BUILD_EXAMPLES=OFF \
+		-D BUILD_DOCS=OFF \
+		-D BUILD_PERF_TESTS=OFF \
+		-D BUILD_TESTS=OFF \
+		-D WITH_TBB=ON \
+		-D WITH_OPENMP=ON \
+		-D WITH_IPP=ON \
+		-D WITH_NVCUVID=ON \
+		-D WITH_CUDA=OFF \
 		-D WITH_CSTRIPES=ON \
 		-D WITH_OPENCL=ON \
-	    ..
+		..
 fi
 
 # Compiling OpenCV
@@ -95,3 +95,14 @@ if [ ! -f /usr/local/bin/opencv_version ]; then
 	sudo make install
 fi
 
+
+# =============================================================================
+# Cleanup installation
+# =============================================================================
+if [ -d /var/tmp/opencv-$OPENCV_VERSION/ ]; then
+	mv /var/tmp/opencv-$OPENCV_VERSION /var/tmp/opencv-$OPENCV_VERSION-DEPRICATED
+fi
+
+if [ -d /var/tmp/opencv_contrib-$OPENCV_VERSION/ ]; then
+	mv /var/tmp/opencv_contrib-$OPENCV_VERSION /var/tmp/opencv_contrib-$OPENCV_VERSION-DEPRICATED
+fi
