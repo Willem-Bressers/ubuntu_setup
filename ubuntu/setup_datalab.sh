@@ -3,7 +3,7 @@
 # =============================================================================
 # Ubuntu packages
 # =============================================================================
-sudo apt install -y vim git python3-pip python3-distutils nodejs npm
+sudo apt install -y vim git python3-pip python3-distutils
 sudo apt autoremove -y
 
 
