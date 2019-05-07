@@ -1,3 +1,13 @@
+
+# =============================================================================
+# VirtualBox
+# =============================================================================
+read -p "--- INSERT GUEST ADDITIONS CD IMAGE --- " done; done=${done:-"yes"}
+sudo apt-get install make gcc linux-headers-$(uname -r)
+sudo mount /dev/cdrom /media/cdrom
+sudo /media/cdrom/VBoxLinuxAdditions.run
+sudo usermod -aG vboxsf $(whoami)
+
 # =============================================================================
 # Packages
 # =============================================================================
@@ -14,10 +24,6 @@ fi
 
 if [ ! -f ~/.bash_profile ]; then
 	touch ~/.bash_profile
-fi
-
-if [ ! -f ~/.pam_environment ]; then
-	touch ~/.pam_environment
 fi
 
 if [ ! -f ~/.gitignore ]; then
@@ -77,3 +83,5 @@ if [ ! -d $HOME/.virtualenvs ]; then
 	echo "export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3" >> ~/.bashrc
 	echo "source /usr/local/bin/virtualenvwrapper.sh" >> ~/.bashrc
 fi
+
+reboot now
