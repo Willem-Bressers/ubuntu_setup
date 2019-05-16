@@ -1,9 +1,13 @@
 #! /bin/bash
 
-echo " <<< SETUP LINUX >>> "
+clear
+echo -e '\n <setup> \n'
 
 if [ ! -d /mnt/shared ]; then
-	echo " > SETUP shared folder"
+	echo -e '\t<shared_folder>'
+	
+	sudo usermod -aG vboxsf $(whoami)
+
 	# Open VirtualBox
 	# Right-click your VM, then click **Settings**
 	# Go to **Shared Folders** section
@@ -22,40 +26,45 @@ if [ ! -d /mnt/shared ]; then
 	sudo apt install -y build-essential linux-headers-$(uname -r)
 	# Run installation script for the guest additions:
 	sudo /media/cdrom/./VBoxLinuxAdditions.run
-	# Create "shared" directory in your home
-	sudo mkdir /mnt/shared
-	# Mount the shared folder from the host to your ~/shared directory
-	sudo mount -t vboxsf shared /mnt/shared
-	# Add the following line to fstab (separated by tabs)
-	sudo vi /etc/fstab
-	"shared	/mnt/shared	vboxsf	defaults	0	0"
-	# Add the following line to modules
-	sudo vi /etc/modules
-	"vboxsf"
-	# reboot
+	# # Create "shared" directory in your home
+	# sudo mkdir /mnt/shared
+	# # Mount the shared folder from the host to your ~/shared directory
+	# sudo mount -t vboxsf shared /mnt/shared
+	# # Add the following line to fstab (separated by tabs)
+	# sudo vi /etc/fstab
+	# "shared	/mnt/shared	vboxsf	defaults	0	0"
+	# # Add the following line to modules
+	# sudo vi /etc/modules
+	# "vboxsf"
+	# # reboot
+	echo -e '\t</shared_folder>'
 	shutdown -r now
 fi
 
-read -p " > Enter your email address: (willem.bressers@axians.com)? " email; email=${email:-"willem.bressers@axians.com"}
-read -p " > Enter your name: (Willem Bressers)? " name; name=${name:-"Willem Bressers"}
+read -rep $'\t<input email=willem.bressers@axians.com\>' email; email=${email:-"willem.bressers@axians.com"}
+read -rep $'\t<input name=Willem Bressers\>' name; name=${name:-"Willem Bressers"}
+
 
 if [ ! -f ~/.ssh/id_rsa.pub ]; then
-	echo " > Generate SSH key"
+	echo -e '\t<ssh_key>'
 	ssh-keygen -t rsa -b 4096 -C $email
+	echo -e '\t</ssh_key>'
 fi 
 
 if [ ! -d ~/projects ]; then
-	echo " > SETUP projects folder"
-	sudo ln -s /mnt/shared/projects ~/projects
+	echo -e '\t<project_folder>'
+	sudo ln -s /media/sf_shared/projects ~/projects
+	echo -e '\t</project_folder>'
 fi
 
 if [ ! -f ~/.gitignore ]; then
-	echo " > SETUP git"
+	echo -e '\t<git>'
 	touch ~/.gitignore
 	git config --global user.email $email
 	git config --global user.name $name
 	git config --global push.default simple
 	git config --global core.excludesfile ~/.gitignore
+	echo -e '\t</git>'
 fi
 
-echo " <<< SETUP LINUX DONE >>> "
+echo -e '\n </setup> \n'
