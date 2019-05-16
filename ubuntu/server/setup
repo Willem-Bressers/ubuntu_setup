@@ -1,0 +1,61 @@
+#! /bin/bash
+
+echo " <<< SETUP LINUX >>> "
+
+if [ ! -d /mnt/shared ]; then
+	echo " > SETUP shared folder"
+	# Open VirtualBox
+	# Right-click your VM, then click **Settings**
+	# Go to **Shared Folders** section
+	# Add a new shared folder
+	# On **Add Share** prompt, select the **Folder Path** in your host that you want to be accessible inside your VM.
+	# In the **Folder Name** field, type `shared`
+	# Uncheck **Read-only** and **Auto-mount**, and check **Make Permanent**
+	# Start your VM
+	# Once your VM is up and running, go to **Devices** menu -> **Insert Guest Additions CD image menu**
+	# create the mount directory
+	sudo mkdir /media/cdrom
+	# Use the following command to mount the CD:
+	sudo mount /dev/cdrom /media/cdrom
+	# Install dependencies for VirtualBox guest additions:
+	sudo apt update
+	sudo apt install -y build-essential linux-headers-$(uname -r)
+	# Run installation script for the guest additions:
+	sudo /media/cdrom/./VBoxLinuxAdditions.run
+	# Create "shared" directory in your home
+	sudo mkdir /mnt/shared
+	# Mount the shared folder from the host to your ~/shared directory
+	sudo mount -t vboxsf shared /mnt/shared
+	# Add the following line to fstab (separated by tabs)
+	sudo vi /etc/fstab
+	"shared	/mnt/shared	vboxsf	defaults	0	0"
+	# Add the following line to modules
+	sudo vi /etc/modules
+	"vboxsf"
+	# reboot
+	shutdown -r now
+fi
+
+read -p " > Enter your email address: (willem.bressers@axians.com)? " email; email=${email:-"willem.bressers@axians.com"}
+read -p " > Enter your name: (Willem Bressers)? " name; name=${name:-"Willem Bressers"}
+
+if [ ! -f ~/.ssh/id_rsa.pub ]; then
+	echo " > Generate SSH key"
+	ssh-keygen -t rsa -b 4096 -C $email
+fi 
+
+if [ ! -d ~/projects ]; then
+	echo " > SETUP projects folder"
+	sudo ln -s /mnt/shared/projects ~/projects
+fi
+
+if [ ! -f ~/.gitignore ]; then
+	echo " > SETUP git"
+	touch ~/.gitignore
+	git config --global user.email $email
+	git config --global user.name $name
+	git config --global push.default simple
+	git config --global core.excludesfile ~/.gitignore
+fi
+
+echo " <<< SETUP LINUX DONE >>> "
