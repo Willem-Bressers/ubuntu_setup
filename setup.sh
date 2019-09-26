@@ -3,6 +3,11 @@ WORKDIR=/media/sf_shared/projects
 #sudo adduser $(whoami) vboxsf
 
 # =============================================================================
+# SETUP 
+# =============================================================================
+sudo apt install -y vim terminator
+
+# =============================================================================
 # SETUP PROJECTS
 # =============================================================================
 if [ ! -d $WORKDIR ]; then
@@ -65,6 +70,7 @@ if [ ! -f $HOME/.ssh/id_rsa.pub ]; then
 		git config --global user.name $name
 		git config --global push.default simple
 		git config --global core.excludesfile $HOME/.gitignore
+		git config --global color.ui true
 	fi
 
 	# update our  ~/.bashrc  file
@@ -80,4 +86,16 @@ if [ ! -f $HOME/.ssh/config ]; then
 	read -p "Axians server login name: (willem)? " name; name=${name:-"willem"}
 	echo -e "Host axians\n\tHostname 10.249.153.16\n\tUser $name\n" >> $HOME/.ssh/config
 	chmod 600 $HOME/.ssh/config
+fi
+
+# =============================================================================
+# SETUP SUBLIME
+# =============================================================================
+if [ -z "$SETUP_SUBLIME" ]; then
+	wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+	echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
+
+	sudo apt update -y
+	sudo apt install -y sublime-text
+	echo "export SETUP_SUBLIME=installed" >> ~/.bashrc
 fi
