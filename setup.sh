@@ -30,10 +30,6 @@ if [ ! -f $HOME/.bash_profile ]; then
 	touch $HOME/.bash_profile
 fi
 
-if [ ! -f $HOME/.pam_environment ]; then
-	touch $HOME/.pam_environment
-fi
-
 if [ ! -f $HOME/.gitignore ]; then
 	touch $HOME/.gitignore
 fi
@@ -71,6 +67,7 @@ if [ ! -f $HOME/.ssh/id_rsa.pub ]; then
 		git config --global push.default simple
 		git config --global core.excludesfile $HOME/.gitignore
 		git config --global color.ui true
+		git config --global core.editor vim
 	fi
 
 	# update our  ~/.bashrc  file
