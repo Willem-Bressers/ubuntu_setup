@@ -3,10 +3,14 @@
 clear
 echo -e '\n <setup> \n'
 
-if [ ! -d /mnt/shared ]; then
+read -rep $'\t<input email=willem.bressers@axians.com\>' email; email=${email:-"willem.bressers@axians.com"}
+read -rep $'\t<input name=Willem Bressers\>' name; name=${name:-"Willem Bressers"}
+
+# =============================================================================
+# Shared (VBOX setup)
+# =============================================================================
+if [ ! -d /media/sf_shared ]; then
 	echo -e '\t<shared_folder>'
-	
-	sudo usermod -aG vboxsf $(whoami)
 
 	# Open VirtualBox
 	# Right-click your VM, then click **Settings**
@@ -25,46 +29,81 @@ if [ ! -d /mnt/shared ]; then
 	sudo apt update
 	sudo apt install -y build-essential linux-headers-$(uname -r)
 	# Run installation script for the guest additions:
-	sudo /media/cdrom/./VBoxLinuxAdditions.run
-	# # Create "shared" directory in your home
-	# sudo mkdir /mnt/shared
-	# # Mount the shared folder from the host to your ~/shared directory
-	# sudo mount -t vboxsf shared /mnt/shared
-	# # Add the following line to fstab (separated by tabs)
-	# sudo vi /etc/fstab
-	# "shared	/mnt/shared	vboxsf	defaults	0	0"
-	# # Add the following line to modules
-	# sudo vi /etc/modules
-	# "vboxsf"
-	# # reboot
+	sudo /media/cdrom/VBoxLinuxAdditions.run
+
+	sudo usermod -aG vboxsf $(whoami)
+
 	echo -e '\t</shared_folder>'
 	shutdown -r now
 fi
 
-read -rep $'\t<input email=willem.bressers@axians.com\>' email; email=${email:-"willem.bressers@axians.com"}
-read -rep $'\t<input name=Willem Bressers\>' name; name=${name:-"Willem Bressers"}
-
-
+# =============================================================================
+# Ssh
+# =============================================================================
 if [ ! -f ~/.ssh/id_rsa.pub ]; then
 	echo -e '\t<ssh_key>'
+
+	# Generate an ssh key
 	ssh-keygen -t rsa -b 4096 -C $email
+	
 	echo -e '\t</ssh_key>'
 fi 
 
+# =============================================================================
+# Projects
+# =============================================================================
 if [ ! -d ~/projects ]; then
 	echo -e '\t<project_folder>'
+
+	# Create a symbolic link to the shared folder
 	sudo ln -s /media/sf_shared/projects ~/projects
+	
 	echo -e '\t</project_folder>'
 fi
 
+# =============================================================================
+# Git
+# =============================================================================
 if [ ! -f ~/.gitignore ]; then
 	echo -e '\t<git>'
+
+	# create a .gitignore file
 	touch ~/.gitignore
+
+	# specify some global git settings
 	git config --global user.email $email
 	git config --global user.name $name
 	git config --global push.default simple
 	git config --global core.excludesfile ~/.gitignore
+
 	echo -e '\t</git>'
 fi
+
+# =============================================================================
+# Python
+# =============================================================================
+if [ ! -d $HOME/.virtualenvs ]; then
+	echo -e '\t<python3_virtualenv>'
+
+	# Install pip3
+	sudo apt install -y python3-pip
+
+	# install python libraries
+	sudo pip3 install virtualenv virtualenvwrapper
+
+	# update our  ~/.bashrc  file
+	echo -e "\n# virtualenv and virtualenvwrapper" >> ~/.bashrc
+	echo "export WORKON_HOME=$HOME/.virtualenvs" >> ~/.bashrc
+	echo "export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3" >> ~/.bashrc
+	echo "source /usr/local/bin/virtualenvwrapper.sh" >> ~/.bashrc
+
+	echo -e '\t</python3_virtualenv>'
+fi
+
+# =============================================================================
+# Bash
+# =============================================================================
+sed -i 's/#force_color_prompt=yes/force_color_prompt=yes/g' ~/.bashrc
+source ~/.bashrc
 
 echo -e '\n </setup> \n'

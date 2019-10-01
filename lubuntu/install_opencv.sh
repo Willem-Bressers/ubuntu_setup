@@ -9,7 +9,7 @@ sudo apt install -y \
 	cmake \
 	git \
 	pkg-config \
-	libgtk-3-devl \
+	libgtk-3-dev \
 	libavcodec-dev \
 	libavformat-dev \
 	libswscale-dev \
@@ -106,3 +106,12 @@ fi
 if [ -d /var/tmp/opencv_contrib-$OPENCV_VERSION/ ]; then
 	mv /var/tmp/opencv_contrib-$OPENCV_VERSION /var/tmp/opencv_contrib-$OPENCV_VERSION-DEPRICATED
 fi
+
+# =============================================================================
+# Add to virtual environment
+# =============================================================================
+
+# lsvirtualenv -b
+# # sudo ln -s /usr/local/lib/python3.6/dist-packages/cv2/python-3.6/cv2.cpython-36m-x86_64-linux-gnu.so /home/willem/.virtualenvs/dfg_bouquet_quality/lib/python3.6/site-packages/cv2.so
+# sudo ln -s /usr/local/lib/python3.6/dist-packages/cv2/python-3.6/cv2.cpython-36m-x86_64-linux-gnu.so /home/willem/.virtualenvs/dfg_bouquet_quality/lib/python3.6/site-packages/cv2.so
+# sudo ln -s /usr/local/lib/python3.6/dist-packages/cv2/python-3.6/cv2.cpython-36m-x86_64-linux-gnu.so /home/willem/.virtualenvs/object-detection-flowers/lib/python3.6/site-packages/cv2.so

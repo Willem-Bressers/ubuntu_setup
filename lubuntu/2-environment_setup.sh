@@ -1,12 +1,8 @@
 
 # =============================================================================
-# VirtualBox
+# Tools
 # =============================================================================
-read -p "--- INSERT GUEST ADDITIONS CD IMAGE --- " done; done=${done:-"yes"}
-sudo apt-get install make gcc linux-headers-$(uname -r)
-sudo mount /dev/cdrom /media/cdrom
-sudo /media/cdrom/VBoxLinuxAdditions.run
-sudo usermod -aG vboxsf $(whoami)
+sudo apt install -y terminator
 
 # =============================================================================
 # Packages
@@ -30,10 +26,10 @@ if [ ! -f ~/.gitignore ]; then
 	touch ~/.gitignore
 fi
 
+
 # =============================================================================
 # SETUP GIT
 # =============================================================================
-
 if [ ! -f ~/.ssh/id_rsa.pub ]; then
 	read -p "Email: (dhr.bressers@gmail.com)? " email; email=${email:-"dhr.bressers@gmail.com"}
 	ssh-keygen -t rsa -b 4096 -C $email
@@ -62,13 +58,14 @@ if [ ! -f ~/.ssh/config ]; then
 	chmod 600 ~/.ssh/config
 fi
 
+
 # =============================================================================
 # SETUP PROJECTS
 # =============================================================================
 if [ ! -d ~/projects ]; then
-	mkdir ~/projects
-	ln -s ~/projects ~/Desktop/projects
+	sudo ln -s /media/sf_shared/projects/ ~/projects
 fi
+
 
 # =============================================================================
 # SETUP PYTHON
@@ -84,4 +81,4 @@ if [ ! -d $HOME/.virtualenvs ]; then
 	echo "source /usr/local/bin/virtualenvwrapper.sh" >> ~/.bashrc
 fi
 
-reboot now
+shutdown -r now
