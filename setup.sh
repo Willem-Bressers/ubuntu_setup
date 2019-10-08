@@ -80,10 +80,8 @@ if [ ! -f ${HOME}/.ssh/id_rsa.pub ]; then
 
 	setup "PS1"
 	echo -e "\n# --- GIT ---" >> ${HOME}/.bashrc
-	echo -e "parse_git_branch() {
-		\tgit branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
-	}" >> ${HOME}/.bashrc
-	echo "PS1=\"\[\033[01;32m\]\u\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]:\[\033[33m\]\$(parse_git_branch)\[\033[00m\]$ \"" >> ${HOME}/.bashrc
+	echo -e "parse_git_branch() { \n\t git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/' \n}" >> ${HOME}/.bashrc
+	echo "PS1=\"\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]:\[\033[33m\]\$(parse_git_branch)\[\033[00m\]$ \"" >> ${HOME}/.bashrc
 fi
 
 # -----------------------------------------------------------------------------
