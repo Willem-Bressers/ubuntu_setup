@@ -30,9 +30,9 @@ if [ ! -d ${HOME}/Desktop/projects ]; then
 	ln -s ${WORKDIR} ${HOME}/Desktop/projects
 fi
 
-if [ ! -f ${HOME}/.bash_aliases ]; then
-	touch ${HOME}/.bash_aliases
-	echo -e "alias open=nautilus" >> ${HOME}/.bash_aliases
+if [ ! -f $HOME/.bash_aliases ]; then
+	touch $HOME/.bash_aliases
+	echo "alias open='nautilus'" >> $HOME/.bash_aliases
 fi
 
 if [ ! -f ${HOME}/.bash_profile ]; then
@@ -46,13 +46,14 @@ fi
 # -----------------------------------------------------------------------------
 setup "python3 & pip3"
 sudo apt install -y python3-pip python3-distutils
+
 if [ ! -d ${HOME}/.virtualenvs ]; then
 	setup "virtualenv"
 	pip3 install --user virtualenv virtualenvwrapper jupyerlabs
 	echo -e "\n# --- virtualenvwrapper ---" >> ${HOME}/.bashrc
 	echo "export WORKON_HOME=${HOME}/.virtualenvs" >> ${HOME}/.bashrc
 	echo "export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3" >> ${HOME}/.bashrc
-	echo "source /usr/local/bin/virtualenvwrapper.sh" >> ${HOME}/.bashrc
+	echo "source $(which virtualenvwrapper.sh)" >> ${HOME}/.bashrc
 	sudo ln -s /etc/python3 /etc/python
 fi
 

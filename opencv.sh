@@ -51,6 +51,7 @@ fi
 # Building OpenCV from Source Using CMake
 # =============================================================================
 # create a build directory
+rm /var/tmp/opencv-$OPENCV_VERSION/build
 if [ ! -d /var/tmp/opencv-$OPENCV_VERSION/build ]; then
 	mkdir /var/tmp/opencv-$OPENCV_VERSION/build 
 fi
@@ -79,11 +80,9 @@ if [ ! -f /var/tmp/opencv-$OPENCV_VERSION/build/Makefile ]; then
 		..
 fi
 
-# Compiling OpenCV
+# Compiling OpenCV (utilizing all processors)
 if [ -d /var/tmp/opencv-$OPENCV_VERSION/build/bin/ ] && [ -z "$(ls -A /var/tmp/opencv-$OPENCV_VERSION/build/bin/)" ]; then
 	cd /var/tmp/opencv-$OPENCV_VERSION/build
-	
-	# utilizing all processors
 	make -j$(nproc)
 fi 
 
@@ -104,3 +103,10 @@ fi
 if [ -d /var/tmp/opencv_contrib-$OPENCV_VERSION/ ]; then
 	mv /var/tmp/opencv_contrib-$OPENCV_VERSION /var/tmp/opencv_contrib-$OPENCV_VERSION-DEPRICATED
 fi
+
+# =============================================================================
+# ADD opencv to virtual environment (see setup.sh)
+# =============================================================================
+lsvirtualenv -b
+read -p " ==> which environment? " VENV;
+sudo ln -s /usr/local/lib/python3.6/dist-packages/cv2/python-3.6/cv2.cpython-36m-x86_64-linux-gnu.so /home/willem/.virtualenvs/${VENV}/lib/python3.6/site-packages/cv2.so
