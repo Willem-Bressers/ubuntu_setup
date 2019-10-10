@@ -21,8 +21,12 @@ function message {
 # =============================================================================
 
 # -----------------------------------------------------------------------------
-setup "vim & terminator"
-sudo apt install -y vim terminator
+if [ -z "$SETUP_GLOBAL" ]; then
+	setup "vim & terminator"
+	sudo apt install -y vim terminator
+
+	echo "export SETUP_GLOBAL=installed" >> ~/.bashrc
+fi
 
 if [ ! -d ${WORKDIR} ]; then
 	setup "${WORKDIR}"
@@ -48,10 +52,10 @@ if [ ! -f ${HOME}/.gitignore ]; then
 fi
 
 # -----------------------------------------------------------------------------
-setup "python3 & pip3"
-sudo apt install -y python3-pip python3-distutils
-
 if [ ! -d ${HOME}/.virtualenvs ]; then
+	setup "python3 & pip3"
+	sudo apt install -y python3-pip python3-distutils
+
 	setup "virtualenv"
 	pip3 install --user virtualenv virtualenvwrapper jupyerlabs
 	echo -e "\n# --- virtualenvwrapper ---" >> ${HOME}/.bashrc
@@ -65,10 +69,10 @@ if [ ! -d ${HOME}/.virtualenvs ]; then
 fi
 
 # -----------------------------------------------------------------------------
-setup "git"
-sudo apt install -y git
-
 if [ ! -f ${HOME}/.ssh/id_rsa.pub ]; then
+	setup "git"
+	sudo apt install -y git
+
 	setup "ssh key"
 	read -p "Email: (dhr.bressers@gmail.com)? " email; email=${email:-"dhr.bressers@gmail.com"}
 	ssh-keygen -t rsa -b 4096 -C $email
@@ -133,6 +137,7 @@ fi
 
 # -----------------------------------------------------------------------------
 if [ -z "$SETUP_DOCKER" ]; then
+	setup "docker"
 	sudo apt-get remove docker docker-engine docker.io containerd runc
 	sudo apt-get update -y 
 	sudo apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
@@ -151,10 +156,17 @@ if [ -z "$SETUP_DOCKER" ]; then
 fi
 
 # -----------------------------------------------------------------------------
-# wget wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-# source ~/.bashrc
-# conda config --set auto_activate_base false
+if [ -z "$SETUP_NVIDIA_DOCKER" ]; then
+	setup "nvidia-docker"
+	distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
+	curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
+	curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
 
+	sudo apt-get --allow-releaseinfo-change update -y 
+	sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit
+	sudo systemctl restart docker
+	echo "export SETUP_NVIDIA_DOCKER=installed" >> ${HOME}/.bashrc
+fi
 
 # -----------------------------------------------------------------------------
 echo -e ""
