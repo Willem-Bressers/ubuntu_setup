@@ -12,6 +12,10 @@ function setup {
 	echo -e "\n\e[92m[setup]\e[0m > $1"
 }
 
+function message {
+	echo -e "\e[92m[setup]\e[0m $1 \e[34m$2\e[0m"
+}
+
 # =============================================================================
 # PROCESS
 # =============================================================================
@@ -54,7 +58,10 @@ if [ ! -d ${HOME}/.virtualenvs ]; then
 	echo "export WORKON_HOME=${HOME}/.virtualenvs" >> ${HOME}/.bashrc
 	echo "export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3" >> ${HOME}/.bashrc
 	echo "source $(which virtualenvwrapper.sh)" >> ${HOME}/.bashrc
-	sudo ln -s /etc/python3 /etc/python
+	# sudo ln -s /etc/python3 /etc/python
+
+	# terminator needs python to be 2.7
+	sudo ln -sf /usr/bin/python2.7 /usr/bin/python
 fi
 
 # -----------------------------------------------------------------------------
@@ -143,4 +150,19 @@ if [ -z "$SETUP_DOCKER" ]; then
 	echo "export SETUP_DOCKER=installed" >> ${HOME}/.bashrc
 fi
 
-setup 'DONE: Run [source ~/.bashrc] now'
+# -----------------------------------------------------------------------------
+# wget wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+# source ~/.bashrc
+# conda config --set auto_activate_base false
+
+
+# -----------------------------------------------------------------------------
+echo -e ""
+
+#https://www.digitalocean.com/community/tutorials/how-to-configure-ssh-key-based-authentication-on-a-linux-server
+message 'Add your ssh key to remote servers:' 'ssh-copy-id username@remote_host'
+
+message 'Activate all new settings:' 'source ~/.bashrc'
+message 'Or reboot' 'shutdown -r now'
+echo -e ""
+message 'DONE'
