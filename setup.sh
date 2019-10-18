@@ -79,6 +79,10 @@ if [ -z $SETUP_BASH_ALIASES ]; then
 	# create an bash aliases file 
 	touch $HOME/.bash_aliases
 
+	# create some conveniant cli shortcuts
+	echo -e "\n# Global" >> $HOME/.bash_aliases
+	echo -e "alias projects='cd \$HOME/projects'" >> $HOME/.bash_aliases
+
 	# check if pcmanfm-qt is installed (commonly on lubuntu)
 	if [ -z $(which pcmanfm-qt) ]; then
 		echo -e "alias open=pcmanfm-qt" >> $HOME/.bash_aliases
@@ -106,12 +110,21 @@ if [ -z $SETUP_MINICONDA ]; then
 	# remove install script
 	rm  Miniconda3-latest-Linux-x86_64.sh
 
+	# create some conveniant cli shortcuts
+	echo -e "\n# Conda environments" >> $HOME/.bash_aliases
+	echo -e "alias cec='conda create --name'" >> $HOME/.bash_aliases
+	echo -e "alias cer='conda env remove --name'" >> $HOME/.bash_aliases
+	echo -e "alias cel='conda env list'" >> $HOME/.bash_aliases
+	echo -e "alias ce='conda activate'" >> $HOME/.bash_aliases
+	echo -e "\n# Conda packages" >> $HOME/.bash_aliases
+	echo -e "alias cip='conda install'" >> $HOME/.bash_aliases
+
 	echo "export SETUP_MINICONDA=installed" >> $SETUP_FILE
 fi 
 
 
 # -----------------------------------------------------------------------------
-if [ -z $SETUP_MINICONDA ]; then
+if [ -z $SETUP_SUBLIME ]; then
 	setup "sublime-text"
 
 	# why do i need this ??
@@ -195,6 +208,19 @@ if [ -z $SETUP_GIT ]; then
 	# echo -e "parse_git_branch() { \n\t git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/' \n}" >> $HOME/.bashrc
 	# echo "PS1=\"\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]:\[\033[33m\]\$(parse_git_branch)\[\033[00m\]$ \"" >> $HOME/.bashrc
 	
+	# create some conveniant cli shortcuts
+	echo -e "\n# Git" >> $HOME/.bash_aliases
+	echo -e "alias ga='git add .'" >> $HOME/.bash_aliases
+	echo -e "alias gb='git branch'" >> $HOME/.bash_aliases
+	echo -e "alias gc='git commit --message'" >> $HOME/.bash_aliases
+	echo -e "alias gd='git diff'" >> $HOME/.bash_aliases
+	echo -e "alias gi='git init'" >> $HOME/.bash_aliases
+	echo -e "alias gp='git pull'" >> $HOME/.bash_aliases
+	echo -e "alias gr='git reset'" >> $HOME/.bash_aliases
+	echo -e "alias gs='git status'" >> $HOME/.bash_aliases
+	echo -e "alias gst='git stash'" >> $HOME/.bash_aliases
+	echo -e "alias gstp='git stash pop'" >> $HOME/.bash_aliases
+
 	echo "export SETUP_GIT=installed" >> $SETUP_FILE
 fi
 
