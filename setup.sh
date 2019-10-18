@@ -216,6 +216,7 @@ if [ -z $SETUP_GIT ]; then
 	echo -e "alias gd='git diff'" >> $HOME/.bash_aliases
 	echo -e "alias gi='git init'" >> $HOME/.bash_aliases
 	echo -e "alias gp='git pull'" >> $HOME/.bash_aliases
+	echo -e "alias gpp='git pull && git push'" >> $HOME/.bash_aliases
 	echo -e "alias gr='git reset'" >> $HOME/.bash_aliases
 	echo -e "alias gs='git status'" >> $HOME/.bash_aliases
 	echo -e "alias gst='git stash'" >> $HOME/.bash_aliases
