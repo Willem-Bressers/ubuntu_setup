@@ -59,229 +59,229 @@ if [ -z $SETUP_GUEST_ADDITIONS ]; then
 fi
 
 
-# -----------------------------------------------------------------------------
-if [ ! -d $HOME/Desktop/projects ]; then
-	setup "$WORKDIR"
+# # -----------------------------------------------------------------------------
+# if [ ! -d $HOME/Desktop/projects ]; then
+# 	setup "$WORKDIR"
 
-	# create a working directory (in shared folder)
-	mkdir -p $WORKDIR
+# 	# create a working directory (in shared folder)
+# 	mkdir -p $WORKDIR
 
-	# symbolic link the directory to $HOME (for convience)
-	ln -s $WORKDIR $HOME/projects
-	ln -s $WORKDIR $HOME/Desktop/projects
-fi
+# 	# symbolic link the directory to $HOME (for convience)
+# 	ln -s $WORKDIR $HOME/projects
+# 	ln -s $WORKDIR $HOME/Desktop/projects
+# fi
 
 
-# -----------------------------------------------------------------------------
-if [ -z $SETUP_BASH_ALIASES ]; then
-	setup "$HOME/.bash_aliases"
+# # -----------------------------------------------------------------------------
+# if [ -z $SETUP_BASH_ALIASES ]; then
+# 	setup "$HOME/.bash_aliases"
 
-	# create an bash aliases file 
-	touch $HOME/.bash_aliases
+# 	# create an bash aliases file 
+# 	touch $HOME/.bash_aliases
 
-	# create some conveniant cli shortcuts
-	echo -e "\n# Global" >> $HOME/.bash_aliases
-	echo -e "alias projects='cd \$HOME/projects'" >> $HOME/.bash_aliases
+# 	# create some conveniant cli shortcuts
+# 	echo -e "\n# Global" >> $HOME/.bash_aliases
+# 	echo -e "alias projects='cd \$HOME/projects'" >> $HOME/.bash_aliases
 
-	# check if pcmanfm-qt is installed (commonly on lubuntu)
-	if [ -z $(which pcmanfm-qt) ]; then
-		echo -e "alias open=pcmanfm-qt" >> $HOME/.bash_aliases
-	fi
+# 	# check if pcmanfm-qt is installed (commonly on lubuntu)
+# 	if [ -z $(which pcmanfm-qt) ]; then
+# 		echo -e "alias open=pcmanfm-qt" >> $HOME/.bash_aliases
+# 	fi
 	
-	# check if natutilus is installed (commonly on ubuntu)
-	if [ -z $(which nautilus) ]; then
-		echo -e "alias open=nautilus" >> $HOME/.bash_aliases 
-	fi
+# 	# check if natutilus is installed (commonly on ubuntu)
+# 	if [ -z $(which nautilus) ]; then
+# 		echo -e "alias open=nautilus" >> $HOME/.bash_aliases 
+# 	fi
 
-	echo "export SETUP_BASH_ALIASES=installed" >> $SETUP_FILE
-fi
-
-
-# -----------------------------------------------------------------------------
-if [ -z $SETUP_PYTHON_ENV ]; then
-	setup "python environments"
-
-	# download installer
-	wget https://bootstrap.pypa.io/get-pip.py
-
-	# install
-	sudo python3 get-pip.py
-
-	# remove install script
-	rm get-pip.py
-
-	# install python environment packages
-	sudo pip install virtualenv virtualenvwrapper
-
-	# create some conveniant cli shortcuts
-	echo -e "\n# virtualenv and virtualenvwrapper" >> $HOME/.bashrc
-	echo -e "export WORKON_HOME=$HOME/.virtualenvs" >> $HOME/.bashrc
-	echo -e "export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3" >> $HOME/.bashrc
-	echo -e "source /usr/local/bin/virtualenvwrapper.sh" >> $HOME/.bashrc
-
-	echo "export SETUP_PYTHON_ENV=installed" >> $SETUP_FILE
-fi 
+# 	echo "export SETUP_BASH_ALIASES=installed" >> $SETUP_FILE
+# fi
 
 
-# -----------------------------------------------------------------------------
-if [ -z $SETUP_MINICONDA ]; then
-	setup "miniconda"
+# # -----------------------------------------------------------------------------
+# if [ -z $SETUP_PYTHON_ENV ]; then
+# 	setup "python environments"
 
-	# download installer
-	wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+# 	# download installer
+# 	wget https://bootstrap.pypa.io/get-pip.py
 
-	# install
-	bash Miniconda3-latest-Linux-x86_64.sh -u
+# 	# install
+# 	sudo python3 get-pip.py
 
-	# remove install script
-	rm  Miniconda3-latest-Linux-x86_64.sh
+# 	# remove install script
+# 	rm get-pip.py
 
-	# create some conveniant cli shortcuts
-	echo -e "\n# Conda environments" >> $HOME/.bash_aliases
-	echo -e "alias cec='conda create --name'" >> $HOME/.bash_aliases
-	echo -e "alias cer='conda deactivate && conda env remove --name'" >> $HOME/.bash_aliases
-	echo -e "alias cel='conda env list'" >> $HOME/.bash_aliases
-	echo -e "alias cea='conda activate'" >> $HOME/.bash_aliases
-	echo -e "alias ced='conda deactivate'" >> $HOME/.bash_aliases
-	echo -e "\n# Conda packages" >> $HOME/.bash_aliases
-	echo -e "alias cip='conda install'" >> $HOME/.bash_aliases
+# 	# install python environment packages
+# 	sudo pip install virtualenv virtualenvwrapper
 
-	echo "export SETUP_MINICONDA=installed" >> $SETUP_FILE
-fi 
+# 	# create some conveniant cli shortcuts
+# 	echo -e "\n# virtualenv and virtualenvwrapper" >> $HOME/.bashrc
+# 	echo -e "export WORKON_HOME=$HOME/.virtualenvs" >> $HOME/.bashrc
+# 	echo -e "export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3" >> $HOME/.bashrc
+# 	echo -e "source /usr/local/bin/virtualenvwrapper.sh" >> $HOME/.bashrc
 
-
-# -----------------------------------------------------------------------------
-if [ -z $SETUP_SUBLIME ]; then
-	setup "sublime-text"
-
-	# why do i need this ??
-	sudo apt-get install apt-transport-https
-
-	# download the sublime key
-	wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
-
-	# add sublime sources to the package manager
-	echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
-
-	# update the sources
-	sudo apt update -y
-
-	# install the package
-	sudo apt install -y sublime-text
-
-	echo "export SETUP_SUBLIME=installed" >> $SETUP_FILE
-fi
+# 	echo "export SETUP_PYTHON_ENV=installed" >> $SETUP_FILE
+# fi 
 
 
-# -----------------------------------------------------------------------------
-if [ -z $SETUP_VIM ]; then
-	setup "vim"
+# # -----------------------------------------------------------------------------
+# if [ -z $SETUP_MINICONDA ]; then
+# 	setup "miniconda"
 
-	# install vim
-	sudo apt install -y vim
+# 	# download installer
+# 	wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+
+# 	# install
+# 	bash Miniconda3-latest-Linux-x86_64.sh -u
+
+# 	# remove install script
+# 	rm  Miniconda3-latest-Linux-x86_64.sh
+
+# 	# create some conveniant cli shortcuts
+# 	echo -e "\n# Conda environments" >> $HOME/.bash_aliases
+# 	echo -e "alias cec='conda create --name'" >> $HOME/.bash_aliases
+# 	echo -e "alias cer='conda deactivate && conda env remove --name'" >> $HOME/.bash_aliases
+# 	echo -e "alias cel='conda env list'" >> $HOME/.bash_aliases
+# 	echo -e "alias cea='conda activate'" >> $HOME/.bash_aliases
+# 	echo -e "alias ced='conda deactivate'" >> $HOME/.bash_aliases
+# 	echo -e "\n# Conda packages" >> $HOME/.bash_aliases
+# 	echo -e "alias cip='conda install'" >> $HOME/.bash_aliases
+
+# 	echo "export SETUP_MINICONDA=installed" >> $SETUP_FILE
+# fi 
+
+
+# # -----------------------------------------------------------------------------
+# if [ -z $SETUP_SUBLIME ]; then
+# 	setup "sublime-text"
+
+# 	# why do i need this ??
+# 	sudo apt-get install apt-transport-https
+
+# 	# download the sublime key
+# 	wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+
+# 	# add sublime sources to the package manager
+# 	echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
+
+# 	# update the sources
+# 	sudo apt update -y
+
+# 	# install the package
+# 	sudo apt install -y sublime-text
+
+# 	echo "export SETUP_SUBLIME=installed" >> $SETUP_FILE
+# fi
+
+
+# # -----------------------------------------------------------------------------
+# if [ -z $SETUP_VIM ]; then
+# 	setup "vim"
+
+# 	# install vim
+# 	sudo apt install -y vim
 	
-	echo "export SETUP_VIM=installed" >> $SETUP_FILE
-fi
+# 	echo "export SETUP_VIM=installed" >> $SETUP_FILE
+# fi
 
 
-# -----------------------------------------------------------------------------
-if [ -z $SETUP_TERMINATOR ]; then
-	setup "terminator"
+# # -----------------------------------------------------------------------------
+# if [ -z $SETUP_TERMINATOR ]; then
+# 	setup "terminator"
 	
-	# install terminator
-	sudo apt install -y terminator
+# 	# install terminator
+# 	sudo apt install -y terminator
 	
-	echo "export SETUP_TERMINATOR=installed" >> $SETUP_FILE
-fi
+# 	echo "export SETUP_TERMINATOR=installed" >> $SETUP_FILE
+# fi
 
 
-# -----------------------------------------------------------------------------
-if [ -z $SETUP_SSH ]; then
-	setup "ssh"
+# # -----------------------------------------------------------------------------
+# if [ -z $SETUP_SSH ]; then
+# 	setup "ssh"
 
-	# generate a key on the given email address
-	ssh-keygen -t rsa -b 4096 -C $email
+# 	# generate a key on the given email address
+# 	ssh-keygen -t rsa -b 4096 -C $email
 	
-	message 'Add your ssh key to remote servers:' 'ssh-copy-id username@remote_host'
+# 	message 'Add your ssh key to remote servers:' 'ssh-copy-id username@remote_host'
 
-	# touch $HOME/.ssh/config
-	# read -p "Axians server login name: (willem)? " name; name=${name:-"willem"}
-	# echo -e "Host axians\n\tHostname xx.xxx.xxx.xx\n\tUser $name\n" >> $HOME/.ssh/config
-	# chmod 600 $HOME/.ssh/config
+# 	# touch $HOME/.ssh/config
+# 	# read -p "Axians server login name: (willem)? " name; name=${name:-"willem"}
+# 	# echo -e "Host axians\n\tHostname xx.xxx.xxx.xx\n\tUser $name\n" >> $HOME/.ssh/config
+# 	# chmod 600 $HOME/.ssh/config
 
-	echo "export SETUP_SSH=installed" >> $SETUP_FILE
-fi
+# 	echo "export SETUP_SSH=installed" >> $SETUP_FILE
+# fi
 
 
-# -----------------------------------------------------------------------------
-if [ -z $SETUP_GIT ]; then
-	setup "git"
+# # -----------------------------------------------------------------------------
+# if [ -z $SETUP_GIT ]; then
+# 	setup "git"
 
-	# install git
-	sudo apt install -y git
+# 	# install git
+# 	sudo apt install -y git
 
-	# specify a global config & ignore files
-	touch $HOME/.gitconfig
-	touch $HOME/.gitignore
+# 	# specify a global config & ignore files
+# 	touch $HOME/.gitconfig
+# 	touch $HOME/.gitignore
 	
-	# specify some global git configuration
-	git config --global user.email $email
-	git config --global user.name $name
-	git config --global push.default simple
-	git config --global core.excludesfile $HOME/.gitignore
-	git config --global color.ui true
-	git config --global core.editor vim
+# 	# specify some global git configuration
+# 	git config --global user.email $email
+# 	git config --global user.name $name
+# 	git config --global push.default simple
+# 	git config --global core.excludesfile $HOME/.gitignore
+# 	git config --global color.ui true
+# 	git config --global core.editor vim
 
-	# echo -e "parse_git_branch() { \n\t git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/' \n}" >> $HOME/.bashrc
-	# echo "PS1=\"\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]:\[\033[33m\]\$(parse_git_branch)\[\033[00m\]$ \"" >> $HOME/.bashrc
+# 	# echo -e "parse_git_branch() { \n\t git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/' \n}" >> $HOME/.bashrc
+# 	# echo "PS1=\"\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]:\[\033[33m\]\$(parse_git_branch)\[\033[00m\]$ \"" >> $HOME/.bashrc
 	
-	# create some conveniant cli shortcuts
-	echo -e "\n# Git" >> $HOME/.bash_aliases
-	echo -e "alias ga='git add .'" >> $HOME/.bash_aliases
-	echo -e "alias gb='git branch'" >> $HOME/.bash_aliases
-	echo -e "alias gc='git commit --message'" >> $HOME/.bash_aliases
-	echo -e "alias gd='git diff'" >> $HOME/.bash_aliases
-	echo -e "alias gi='git init'" >> $HOME/.bash_aliases
-	echo -e "alias gp='git pull'" >> $HOME/.bash_aliases
-	echo -e "alias gpp='git pull && git push'" >> $HOME/.bash_aliases
-	echo -e "alias gr='git reset'" >> $HOME/.bash_aliases
-	echo -e "alias gs='git status'" >> $HOME/.bash_aliases
-	echo -e "alias gst='git stash'" >> $HOME/.bash_aliases
-	echo -e "alias gstp='git stash pop'" >> $HOME/.bash_aliases
+# 	# create some conveniant cli shortcuts
+# 	echo -e "\n# Git" >> $HOME/.bash_aliases
+# 	echo -e "alias ga='git add .'" >> $HOME/.bash_aliases
+# 	echo -e "alias gb='git branch'" >> $HOME/.bash_aliases
+# 	echo -e "alias gc='git commit --message'" >> $HOME/.bash_aliases
+# 	echo -e "alias gd='git diff'" >> $HOME/.bash_aliases
+# 	echo -e "alias gi='git init'" >> $HOME/.bash_aliases
+# 	echo -e "alias gp='git pull'" >> $HOME/.bash_aliases
+# 	echo -e "alias gpp='git pull && git push'" >> $HOME/.bash_aliases
+# 	echo -e "alias gr='git reset'" >> $HOME/.bash_aliases
+# 	echo -e "alias gs='git status'" >> $HOME/.bash_aliases
+# 	echo -e "alias gst='git stash'" >> $HOME/.bash_aliases
+# 	echo -e "alias gstp='git stash pop'" >> $HOME/.bash_aliases
 
-	echo "export SETUP_GIT=installed" >> $SETUP_FILE
-fi
+# 	echo "export SETUP_GIT=installed" >> $SETUP_FILE
+# fi
 
-# -----------------------------------------------------------------------------
-if [ -z $SETUP_DOCKER ]; then
-	setup "docker"
+# # -----------------------------------------------------------------------------
+# if [ -z $SETUP_DOCKER ]; then
+# 	setup "docker"
 
-	# remove existing installation 
-	sudo apt-get remove docker docker-engine docker.io containerd runc
+# 	# remove existing installation 
+# 	sudo apt-get remove docker docker-engine docker.io containerd runc
 
-	# update the system
-	sudo apt-get update -y 
+# 	# update the system
+# 	sudo apt-get update -y 
 
-	# install the required OS dependencies
-	sudo apt-get install -y apt-transport-https ca-certificates gnupg-agent software-properties-common
+# 	# install the required OS dependencies
+# 	sudo apt-get install -y apt-transport-https ca-certificates gnupg-agent software-properties-common
 
-	# download the docker key
-	wget -qO - https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+# 	# download the docker key
+# 	wget -qO - https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
-	# add docker sources to the package manager
-	echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list
+# 	# add docker sources to the package manager
+# 	echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list
 
-	# update the sources
-	sudo apt update -y
+# 	# update the sources
+# 	sudo apt update -y
 
-	# install the package(s)
-	sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+# 	# install the package(s)
+# 	sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 
-	# add the current user to the group
-	sudo usermod -aG docker $USER
+# 	# add the current user to the group
+# 	sudo usermod -aG docker $USER
 
-	echo "export SETUP_DOCKER=installed" >> $SETUP_FILE
-fi
+# 	echo "export SETUP_DOCKER=installed" >> $SETUP_FILE
+# fi
 
 
 # # -----------------------------------------------------------------------------
