@@ -61,23 +61,6 @@ if [ -z $SETUP_GUEST_ADDITIONS ]; then
 	sudo usermod -aG vboxsf $USER
 
 	echo "export SETUP_GUEST_ADDITIONS=installed" >> $SETUP_FILE
-
-	# reboot (so that the vbox guest additions take effect)
-	message "reboot"
-	shutdown -r now
-fi
-
-
-# -----------------------------------------------------------------------------
-if [ ! -d $HOME/Desktop/projects ]; then
-	message "$WORKDIR"
-
-	# create a working directory (in shared folder)
-	mkdir -p $WORKDIR
-
-	# symbolic link the directory to $HOME (for convience)
-	ln -s $WORKDIR $HOME/projects
-	ln -s $WORKDIR $HOME/Desktop/projects
 fi
 
 
@@ -101,6 +84,7 @@ if [ -z $SETUP_BASH_ALIASES ]; then
 
 	echo "export SETUP_BASH_ALIASES=installed" >> $SETUP_FILE
 fi
+
 
 # -----------------------------------------------------------------------------
 if [ -z $SETUP_BASH_FUNCTIONS ]; then
@@ -137,7 +121,6 @@ fi
 
 
 # -----------------------------------------------------------------------------
-echo -e ""
-message 'Activate all new settings:' 'source ~/.bashrc'
-message 'Or reboot' 'shutdown -r now'
 message 'DONE'
+message '(rebooting)'
+shutdown -r now
