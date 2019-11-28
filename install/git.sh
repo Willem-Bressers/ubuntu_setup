@@ -23,7 +23,7 @@ if [ -z $SETUP_GIT ]; then
 	# echo -e "alias gsync='git add . && git commit -am \"\$@\" && git pull && git push'" >> $HOME/.bash_aliases
 	echo -e "alias ga='git add .'" >> $HOME/.bash_aliases
 	echo -e "alias gb='git branch'" >> $HOME/.bash_aliases
-	echo -e "alias gc='git commit --message'" >> $HOME/.bash_aliases
+	echo -e "alias gc='git commit --message' \"\$@\"" >> $HOME/.bash_aliases
 	echo -e "alias gd='git diff'" >> $HOME/.bash_aliases
 	echo -e "alias gi='git init'" >> $HOME/.bash_aliases
 	echo -e "alias gp='git pull'" >> $HOME/.bash_aliases
