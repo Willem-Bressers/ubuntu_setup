@@ -1,22 +1,21 @@
 if [ -z $SETUP_JUPYTERLABS ]; then
 
-	pip install jupyterlab "ipywidgets>=7.5"
-	# pip install jupyterlab==1.2 "ipywidgets>=7.5"
-
+	pip3 install jupyterlab==1.2 "ipywidgets==7.5"
+	
 	# Avoid "JavaScript heap out of memory" errors during extension installation
+	# (OS X/Linux)
 	export NODE_OPTIONS=--max-old-space-size=4096
 
-	# Jupyter widgets extension
+	# Jupyter widgets manager
 	jupyter labextension install @jupyter-widgets/jupyterlab-manager@1.1 --no-build
 
-	# jupyterlab renderer support
-	jupyter labextension install jupyterlab-plotly@1.3.0 --no-build
-
-	# FigureWidget support
-	jupyter labextension install plotlywidget@1.3.0 --no-build
+	# Plotly
+	# @jupyterlab/plotly-extension is being deprecated. Please use the Plotly-supported jupyterlab-plotly.
+	jupyter labextension install plotlywidget@1.4.0 --no-build
+	jupyter labextension install jupyterlab-plotly@1.4.0 --no-build
 
 	# Build extensions (must be done to activate extensions since --no-build is used above)
-	jupyter lab build
+	jupyter lab build --minimize=False
 
 	# Unset NODE_OPTIONS environment variable
 	unset NODE_OPTIONS
