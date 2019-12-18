@@ -27,7 +27,7 @@ fi
 
 # -----------------------------------------------------------------------------
 if [ -z $SETUP_USER_NAME ]; then
-	message "guest additions"
+	message "user name"
 
 	read -p "Name: (Willem Bressers)? " name; name=${name:-"Willem Bressers"}
 
@@ -37,7 +37,7 @@ fi
 
 # -----------------------------------------------------------------------------
 if [ -z $SETUP_USER_EMAIL ]; then
-	message "guest additions"
+	message "user email
 
 	read -p "Email: (dhr.bressers@gmail.com)? " email; email=${email:-"dhr.bressers@gmail.com"}
 
@@ -48,6 +48,9 @@ fi
 # -----------------------------------------------------------------------------
 if [ -z $SETUP_GUEST_ADDITIONS ]; then
 	message "guest additions"
+	
+	# install OS packages
+	sudo apt-get install -y build-essential linux-headers-`uname –r`
 
 	read -p "--- INSERT GUEST ADDITIONS CD IMAGE --- " done; done=${done:-"yes"}
 
