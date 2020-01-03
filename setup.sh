@@ -37,7 +37,7 @@ fi
 
 # -----------------------------------------------------------------------------
 if [ -z $SETUP_USER_EMAIL ]; then
-	message "user email
+	message "user email"
 
 	read -p "Email: (dhr.bressers@gmail.com)? " email; email=${email:-"dhr.bressers@gmail.com"}
 
@@ -122,6 +122,21 @@ if [ -z $SETUP_SSH ]; then
 	echo "export SETUP_SSH=installed" >> $SETUP_FILE
 fi
 
+
+# -----------------------------------------------------------------------------
+if [ -z $SETUP_UPDATE_OS ]; then
+	message "update OS"
+
+	# upgrade all packages
+	sudo apt-get upgrade -y
+
+	# remove cloud init
+	echo 'datasource_list: [ None ]' | sudo -s tee /etc/cloud/cloud.cfg.d/90_dpkg.cfg
+	sudo apt-get purge cloud-init -y
+	sudo rm -rf /etc/cloud/; sudo rm -rf /var/lib/cloud/
+
+	echo "export SETUP_UPDATE_OS=installed" >> $SETUP_FILE
+fi
 
 # -----------------------------------------------------------------------------
 message 'DONE'
