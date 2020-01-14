@@ -12,5 +12,8 @@ if [ -z $SETUP_PYTHON_ENV ]; then
 	echo -e "export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3" >> $HOME/.bashrc
 	echo -e "source $HOME/.local/bin/virtualenvwrapper.sh" >> $HOME/.bashrc
 
+	# ensure bash is sourced (with new addtions)
+	source ~/.bashrc
+
 	echo "export SETUP_PYTHON_ENV=installed" >> $SETUP_FILE
 fi 
