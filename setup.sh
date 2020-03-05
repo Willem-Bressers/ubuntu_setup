@@ -49,8 +49,10 @@ fi
 if [ -z $SETUP_GUEST_ADDITIONS ]; then
 	message "guest additions"
 	
+	KERNEL_RELEASE=$(uname –r)
+	
 	# install OS packages
-	sudo apt-get install -y build-essential linux-headers-`uname –r`
+	sudo apt-get install -y build-essential linux-headers-$KERNEL_RELEASE
 
 	read -p "--- INSERT GUEST ADDITIONS CD IMAGE --- " done; done=${done:-"yes"}
 
