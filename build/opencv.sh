@@ -1,128 +1,53 @@
-# -----------------------------------------------------------------------------
-if [ -z $SETUP_OPENCV ]; then
+# https://docs.opencv.org/4.3.0/d2/de6/tutorial_py_setup_in_ubuntu.html
+# https://docs.opencv.org/4.3.0/d7/d9f/tutorial_linux_install.html
+sudo apt-get install -y \
+	build-essential \
+	cmake \
+	doxygen \
+	g++ \
+	gcc \
+	gfortran \
+	git \
+	libatlas-base-dev \
+	libavcodec-dev \
+	libavformat-dev \
+	libavresample-dev \
+	libdc1394-22-dev \
+	libeigen3-dev \
+	libfaac-dev \
+	libgflags-dev \
+	libgoogle-glog-dev \
+	libgphoto2-dev \
+	libgstreamer-plugins-base1.0-dev \
+	libgstreamer1.0-dev \
+	libgtk-3-dev \
+	libhdf5-dev \
+	libjpeg-dev \
+	libmp3lame-dev \
+	libopencore-amrnb-dev \
+	libopencore-amrwb-dev \
+	libopenexr-dev \
+	libpng-dev \
+	libprotobuf-dev \
+	libswscale-dev \
+	libtbb-dev \
+	libtheora-dev \
+	libtiff-dev \
+	libvorbis-dev \
+	libwebp-dev \
+	libx264-dev \
+	libxvidcore-dev \
+	pkg-config \
+	protobuf-compiler \
+	python3-dev \
+	python3-numpy \
+	x264
 
-	OPENCV_VERSION="4.1.0"
+cd ~
+git clone https://github.com/opencv/opencv.git
+git clone https://github.com/opencv/opencv_contrib.git
 
-	# =============================================================================
-	# Required Packages
-	# =============================================================================
-	# install packages
-	sudo apt install -y \
-		build-essential \
-		cmake \
-		git \
-		pkg-config \
-		libgtk-3-dev \
-		libavcodec-dev \
-		libavformat-dev \
-		libswscale-dev \
-		libv4l-dev \
-		libxvidcore-dev \
-		libx264-dev \
-		libjpeg-dev \
-		libpng-dev \
-		libtiff-dev \
-		gfortran \
-		openexr \
-		libatlas-base-dev \
-		python3-dev \
-		python3-numpy \
-		libtbb2 \
-		libtbb-dev \
-		libdc1394-22-dev
-		
-	# clean up packages
-	sudo apt autoremove -y
+cd ~/opencv
+mkdir build
+cd build
 
-
-	# =============================================================================
-	# Getting OpenCV Source Code
-	# =============================================================================
-	# download opencv
-	if [ ! -d /var/tmp/opencv-$OPENCV_VERSION ]; then
-		wget https://github.com/opencv/opencv/archive/$OPENCV_VERSION.tar.gz -O /var/tmp/opencv.tar.gz && \
-		tar xvzf /var/tmp/opencv.tar.gz -C /var/tmp && \
-		rm /var/tmp/opencv.tar.gz
-	fi
-
-	# download opencv contrib modules
-	if [ ! -d /var/tmp/opencv_contrib-$OPENCV_VERSION ]; then
-		wget https://github.com/opencv/opencv_contrib/archive/$OPENCV_VERSION.tar.gz -O /var/tmp/opencv_contrib.tar.gz && \
-		tar xvzf /var/tmp/opencv_contrib.tar.gz -C /var/tmp && \
-		rm /var/tmp/opencv_contrib.tar.gz
-	fi
-
-
-	# =============================================================================
-	# Building OpenCV from Source Using CMake
-	# =============================================================================
-	# create a build directory
-	if [ ! -d /var/tmp/opencv-$OPENCV_VERSION/build ]; then
-		mkdir /var/tmp/opencv-$OPENCV_VERSION/build 
-	fi
-
-	# configure the build (multithreaded / optimized / no examples / no docs / no test)
-	# see: http://amritamaz.net/blog/opencv-config for some good flags tips
-	if [ ! -f /var/tmp/opencv-$OPENCV_VERSION/build/Makefile ]; then
-		cd /var/tmp/opencv-$OPENCV_VERSION/build
-		cmake -D CMAKE_BUILD_TYPE=RELEASE \
-			-D CMAKE_INSTALL_PREFIX=/usr/local \
-			-D OPENCV_EXTRA_MODULES_PATH=/var/tmp/opencv_contrib-$OPENCV_VERSION/modules \
-			-D INSTALL_C_EXAMPLES=OFF \
-			-D INSTALL_PYTHON_EXAMPLES=OFF \
-			-D BUILD_EXAMPLES=OFF \
-			-D BUILD_DOCS=OFF \
-			-D BUILD_PERF_TESTS=OFF \
-			-D BUILD_TESTS=OFF \
-			-D WITH_TBB=ON \
-			-D WITH_OPENMP=ON \
-			-D WITH_IPP=ON \
-			-D WITH_NVCUVID=ON \
-			-D WITH_CUDA=OFF \
-			-D WITH_CSTRIPES=ON \
-			-D WITH_OPENCL=ON \
-			..
-	fi
-
-	# Compiling OpenCV
-	if [ -d /var/tmp/opencv-$OPENCV_VERSION/build/bin/ ] && [ -z "$(ls -A /var/tmp/opencv-$OPENCV_VERSION/build/bin/)" ]; then
-		cd /var/tmp/opencv-$OPENCV_VERSION/build
-		
-		# utilizing all processors
-		make -j$(nproc)
-	fi 
-
-	# Installing OpenCV
-	if [ ! -f /usr/local/bin/opencv_version ]; then
-		cd /var/tmp/opencv-$OPENCV_VERSION/build
-		sudo make install
-	fi
-
-
-	# =============================================================================
-	# Cleanup installation
-	# =============================================================================
-	if [ -d /var/tmp/opencv-$OPENCV_VERSION/ ]; then
-		mv /var/tmp/opencv-$OPENCV_VERSION /var/tmp/opencv-$OPENCV_VERSION-DEPRICATED
-	fi
-
-	if [ -d /var/tmp/opencv_contrib-$OPENCV_VERSION/ ]; then
-		mv /var/tmp/opencv_contrib-$OPENCV_VERSION /var/tmp/opencv_contrib-$OPENCV_VERSION-DEPRICATED
-	fi
-
-	# =============================================================================
-	# Add to virtual environment
-	# =============================================================================
-
-	# python 3.6
-	# /usr/local/lib/python3.6/dist-packages/cv2/python-3.6/cv2.cpython-36m-x86_64-linux-gnu.so
-
-	# python 3.7
-	# /usr/local/lib/python3.7/dist-packages/cv2/python-3.7/cv2.cpython-37m-x86_64-linux-gnu.so
-
-	# # sudo ln -s /usr/local/lib/python3.6/dist-packages/cv2/python-3.6/cv2.cpython-36m-x86_64-linux-gnu.so /home/willem/.virtualenvs/dfg_bouquet_quality/lib/python3.6/site-packages/cv2.so
-	# sudo ln -s /usr/local/lib/python3.6/dist-packages/cv2/python-3.6/cv2.cpython-36m-x86_64-linux-gnu.so /home/willem/.virtualenvs/dfg_bouquet_quality/lib/python3.6/site-packages/cv2.so
-	# sudo ln -s /usr/local/lib/python3.6/dist-packages/cv2/python-3.6/cv2.cpython-36m-x86_64-linux-gnu.so /home/willem/.virtualenvs/object-detection-flowers/lib/python3.6/site-packages/cv2.so
-
-	echo "export SETUP_OPENCV=build" >> $SETUP_FILE
-fi
