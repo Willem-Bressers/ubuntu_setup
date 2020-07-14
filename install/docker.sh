@@ -1,27 +1,24 @@
-if [ -z $SETUP_DOCKER ]; then
-	# remove existing installation 
-	sudo apt-get remove docker docker-engine docker.io containerd runc
 
-	# update the system
-	sudo apt-get update -y 
+# remove existing installation 
+sudo apt-get remove docker docker-engine docker.io containerd runc
 
-	# install the required OS dependencies
-	sudo apt-get install -y apt-transport-https ca-certificates gnupg-agent software-properties-common
+# update the system
+sudo apt-get update -y 
 
-	# download the docker key
-	wget -qO - https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+# install the required OS dependencies
+sudo apt-get install -y apt-transport-https ca-certificates gnupg-agent software-properties-common
 
-	# add docker sources to the package manager
-	echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list
+# download the docker key
+wget -qO - https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
-	# update the sources
-	sudo apt update -y
+# add docker sources to the package manager
+echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list
 
-	# install the package(s)
-	sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+# update the sources
+sudo apt update -y
 
-	# add the current user to the group
-	sudo usermod -aG docker $USER
+# install the package(s)
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 
-	echo "export SETUP_DOCKER=installed" >> $SETUP_FILE
-fi
+# add the current user to the group
+sudo usermod -aG docker $USER
