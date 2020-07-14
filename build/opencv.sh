@@ -1,6 +1,11 @@
 OPENCV_VERSION="4.1.0"
 
 # =============================================================================
+# Optional Packages
+# =============================================================================
+sudo snap install vlc # for video playing (without opencv)
+
+# =============================================================================
 # Required Packages
 # =============================================================================
 # install packages
@@ -111,17 +116,23 @@ if [ -d /var/tmp/opencv_contrib-$OPENCV_VERSION/ ]; then
 	rm -rf /var/tmp/opencv_contrib-$OPENCV_VERSION
 fi
 
+
 # =============================================================================
 # Add opencv to user python location
 # =============================================================================
-sudo ln -s /usr/local/lib/python3.8/dist-packages/cv2/python-3.8/cv2.cpython-38-x86_64-linux-gnu.so `python3 -m site --user-site`/cv2.so
+# sudo ln -s /usr/local/lib/python3.8/dist-packages/cv2/python-3.8/cv2.cpython-38-x86_64-linux-gnu.so `python3 -m site --user-site`/cv2.so
 
-# python 3.6
-# /usr/local/lib/python3.6/dist-packages/cv2/python-3.6/cv2.cpython-36m-x86_64-linux-gnu.so
 
-# python 3.7
-# /usr/local/lib/python3.7/dist-packages/cv2/python-3.7/cv2.cpython-37m-x86_64-linux-gnu.so
+# =============================================================================
+# Add opencv to global python location
+# =============================================================================
+sudo ln -s /usr/local/libb/python3.8/dist-packages/cv2/python-3.8/cv2.cpython-38-x86_64-linux-gnu.so /usr/lib/python3/dist-packages/cv2.so
+# use `$ mkvirtualenv --system-site-packages environment_name` to add globally installed packages to the environment
 
-# # sudo ln -s /usr/local/lib/python3.6/dist-packages/cv2/python-3.6/cv2.cpython-36m-x86_64-linux-gnu.so /home/willem/.virtualenvs/dfg_bouquet_quality/lib/python3.6/site-packages/cv2.so
+
+# =============================================================================
+# Add opencv to virtual environment
+# =============================================================================
+# sudo ln -s /usr/local/lib/python3.6/dist-packages/cv2/python-3.6/cv2.cpython-36m-x86_64-linux-gnu.so /home/willem/.virtualenvs/dfg_bouquet_quality/lib/python3.6/site-packages/cv2.so
 # sudo ln -s /usr/local/lib/python3.6/dist-packages/cv2/python-3.6/cv2.cpython-36m-x86_64-linux-gnu.so /home/willem/.virtualenvs/dfg_bouquet_quality/lib/python3.6/site-packages/cv2.so
 # sudo ln -s /usr/local/lib/python3.6/dist-packages/cv2/python-3.6/cv2.cpython-36m-x86_64-linux-gnu.so /home/willem/.virtualenvs/object-detection-flowers/lib/python3.6/site-packages/cv2.so
