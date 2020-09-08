@@ -1,59 +1,31 @@
-OPENCV_VERSION="4.1.0"
-
-# =============================================================================
-# Optional Packages
-# =============================================================================
-sudo snap install vlc # for video playing (without opencv)
+# https://linuxize.com/post/how-to-install-opencv-on-ubuntu-20-04/
 
 # =============================================================================
 # Required Packages
 # =============================================================================
+# update packages
+sudo apt-get update 
+
 # install packages
-sudo apt install -y \
-	build-essential \
-	cmake \
-	git \
-	pkg-config \
-	libgtk-3-dev \
-	libavcodec-dev \
-	libavformat-dev \
-	libswscale-dev \
-	libv4l-dev \
-	libxvidcore-dev \
-	libx264-dev \
-	libjpeg-dev \
-	libpng-dev \
-	libtiff-dev \
-	gfortran \
-	openexr \
-	libatlas-base-dev \
-	python3-dev \
-	python3-numpy \
-	libtbb2 \
-	libtbb-dev \
-	libdc1394-22-dev
+sudo apt-get install -y build-essential cmake git pkg-config libgtk-3-dev libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libxvidcore-dev libx264-dev libjpeg-dev libpng-dev libtiff-dev gfortran openexr libatlas-base-dev python3-dev libtbb2 libtbb-dev libdc1394-22-dev 
 	
 # clean up packages
 sudo apt autoremove -y
+
+# ensure python is globally installed
+pip3 install numpy 
 
 
 # =============================================================================
 # Getting OpenCV Source Code
 # =============================================================================
 # download opencv + opencv contrib modules
-if [ ! -f /var/tmp/opencv.tar.gz ]; then
-	wget https://github.com/opencv/opencv/archive/$OPENCV_VERSION.tar.gz -O /var/tmp/opencv.tar.gz
+if [ ! -d ~/opencv_build/opencv ]; then
+	mkdir ~/opencv_build
+	git clone https://github.com/opencv/opencv.git ~/opencv_build/opencv 
 fi
-if [ ! -f /var/tmp/opencv_contrib.tar.gz ]; then
-	wget https://github.com/opencv/opencv_contrib/archive/$OPENCV_VERSION.tar.gz -O /var/tmp/opencv_contrib.tar.gz
-fi
-
-# unzip tar files
-if [ -f /var/tmp/opencv.tar.gz ] && [ ! -d /var/tmp/opencv-$OPENCV_VERSION ]; then
-	tar xvzf /var/tmp/opencv.tar.gz -C /var/tmp
-fi
-if [ -f /var/tmp/opencv_contrib.tar.gz ] && [ ! -d /var/tmp/opencv_contrib-$OPENCV_VERSION ]; then
-	tar xvzf /var/tmp/opencv_contrib.tar.gz -C /var/tmp 
+if [ ! -d ~/opencv_build/opencv_contrib ]; then
+	git clone https://github.com/opencv/opencv_contrib.git ~/opencv_build/opencv_contrib 
 fi
 
 
@@ -61,36 +33,44 @@ fi
 # Building OpenCV from Source Using CMake
 # =============================================================================
 # create a build directory
-if [ ! -d /var/tmp/opencv-$OPENCV_VERSION/build ]; then
-	mkdir /var/tmp/opencv-$OPENCV_VERSION/build 
+if [ ! -d ~/opencv_build/opencv/build ]; then
+	mkdir ~/opencv_build/opencv/build
 fi
+
 
 # configure the build (multithreaded / optimized / no examples / no docs / no test)
 # see: http://amritamaz.net/blog/opencv-config for some good flags tips
-if [ ! -f /var/tmp/opencv-$OPENCV_VERSION/build/Makefile ]; then
-	cd /var/tmp/opencv-$OPENCV_VERSION/build
-	cmake -D CMAKE_BUILD_TYPE=RELEASE \
+if [ ! -f ~/opencv_build/opencv/build/Makefile ]; then
+	cd ~/opencv_build/opencv/build
+	# http://amritamaz.net/blog/opencv-config#3-i-want-my-compile-to-be-fast-and-my-code-to-be-speedy
+	cmake \
 		-D CMAKE_INSTALL_PREFIX=/usr/local \
-		-D OPENCV_EXTRA_MODULES_PATH=/var/tmp/opencv_contrib-$OPENCV_VERSION/modules \
-		-D INSTALL_C_EXAMPLES=OFF \
-		-D INSTALL_PYTHON_EXAMPLES=OFF \
-		-D BUILD_EXAMPLES=OFF \
-		-D BUILD_DOCS=OFF \
-		-D BUILD_PERF_TESTS=OFF \
-		-D BUILD_TESTS=OFF \
+		-D INSTALL_C_EXAMPLES=ON \
+		-D INSTALL_PYTHON_EXAMPLES=ON \
+		-D OPENCV_GENERATE_PKGCONFIG=ON \
+		-D OPENCV_EXTRA_MODULES_PATH=~/opencv_build/opencv_contrib/modules \
+		-D BUILD_NEW_PYTHON_SUPPORT=ON \
+		-D BUILD_opencv_python3=yes \
+		-D HAVE_opencv_python3=ON \
+		-D PYTHON_DEFAULT_EXECUTABLE=$(which python3) \
 		-D WITH_TBB=ON \
 		-D WITH_OPENMP=ON \
 		-D WITH_IPP=ON \
+		-D CMAKE_BUILD_TYPE=RELEASE \
+		-D BUILD_EXAMPLES=OFF \
 		-D WITH_NVCUVID=ON \
-		-D WITH_CUDA=OFF \
+		-D WITH_CUDA=ON \
+		-D BUILD_DOCS=OFF \
+		-D BUILD_PERF_TESTS=OFF \
+		-D BUILD_TESTS=OFF \
 		-D WITH_CSTRIPES=ON \
-		-D WITH_OPENCL=ON \
-		..
+		-D WITH_OPENCL=ON CMAKE_INSTALL_PREFIX=/usr/local/ \
+		.. 
 fi
 
 # Compiling OpenCV
-if [ -d /var/tmp/opencv-$OPENCV_VERSION/build/bin/ ] && [ -z "$(ls -A /var/tmp/opencv-$OPENCV_VERSION/build/bin/)" ]; then
-	cd /var/tmp/opencv-$OPENCV_VERSION/build
+if [ -d ~/opencv_build/opencv/build/bin/ ] && [ -z "$(ls -A ~/opencv_build/opencv/build/bin/)" ]; then
+	cd ~/opencv_build/opencv/build
 	
 	# utilizing all processors
 	make -j$(nproc)
@@ -98,36 +78,20 @@ fi
 
 # Installing OpenCV
 if [ ! -f /usr/local/bin/opencv_version ]; then
-	cd /var/tmp/opencv-$OPENCV_VERSION/build
+	cd ~/opencv_build/opencv/build
 	sudo make install
 fi
 
-
 # =============================================================================
-# Cleanup installation
+# Checks
 # =============================================================================
-if [ -d /var/tmp/opencv-$OPENCV_VERSION/ ]; then
-	rm /var/tmp/opencv.tar.gz
-	rm -rf /var/tmp/opencv-$OPENCV_VERSION
-fi
+# C++ bindings
+CCHECK=$(pkg-config --modversion opencv4)
+echo -e "\e[31mC++ version check:\e[0m $CCHECK"
 
-if [ -d /var/tmp/opencv_contrib-$OPENCV_VERSION/ ]; then
-	rm /var/tmp/opencv_contrib.tar.gz
-	rm -rf /var/tmp/opencv_contrib-$OPENCV_VERSION
-fi
-
-
-# =============================================================================
-# Add opencv to user python location
-# =============================================================================
-# sudo ln -s /usr/local/lib/python3.8/dist-packages/cv2/python-3.8/cv2.cpython-38-x86_64-linux-gnu.so `python3 -m site --user-site`/cv2.so
-
-
-# =============================================================================
-# Add opencv to global python location
-# =============================================================================
-sudo ln -s /usr/local/libb/python3.8/dist-packages/cv2/python-3.8/cv2.cpython-38-x86_64-linux-gnu.so /usr/lib/python3/dist-packages/cv2.so
-# use `$ mkvirtualenv --system-site-packages environment_name` to add globally installed packages to the environment
+# python check
+PYTHONCHECK=$(python3 -c "import cv2; print(cv2.__version__)")
+echo -e "\e[31mPython3 version check:\e[0m $PYTHONCHECK"
 
 
 # =============================================================================

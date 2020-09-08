@@ -1,5 +1,5 @@
 # install git
-sudo apt install -y git vim
+sudo apt install -y git vim git-flow
 
 # specify a global config & ignore files
 touch $HOME/.gitconfig
