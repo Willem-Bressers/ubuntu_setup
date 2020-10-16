@@ -1,45 +1,40 @@
-if [ -z $SETUP_ODBC ]; then
-	sudo apt-get install -y curl
 
-	# =========================================================================
-	# SQL SEVER DRIVER
-	# =========================================================================
-	sudo su 
+sudo apt-get install -y curl
 
-	# download the key
-	curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+# =========================================================================
+# SQL SEVER DRIVER
+# =========================================================================
+sudo su 
 
-	# add sources to the package manager
-	curl https://packages.microsoft.com/config/ubuntu/19.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
+# download the key
+curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
 
-	exit
+# add sources to the package manager
+curl https://packages.microsoft.com/config/ubuntu/19.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
 
-	# update the sources
-	sudo apt update -y
+exit
 
-	# install the package(s)
-	sudo ACCEPT_EULA=Y apt-get install -y msodbcsql17
+# update the sources
+sudo apt update -y
 
-	# install mssql tools
-	sudo ACCEPT_EULA=Y apt-get install -y mssql-tools
-	echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile
-	echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
-	source ~/.bashrc
+# install the package(s)
+sudo ACCEPT_EULA=Y apt-get install -y msodbcsql17
 
-	# =========================================================================
-	# ODBC
-	# =========================================================================
+# install mssql tools
+sudo ACCEPT_EULA=Y apt-get install -y mssql-tools
 
-	# install os packages
-	sudo apt-get install unixodbc-dev
+echo -e "\n# MSSQL tools" >> $HOME/.bash_profile
+echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> $HOME/.bash_profile
 
+echo -e "\n# MSSQL tools" >> $HOME/.bashrc
+echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> $HOME/.bashrc
 
-	# =========================================================================
-	# DBEAVER
-	# =========================================================================
-	sudo add-apt-repository ppa:webupd8team/java
-	sudo apt update
-	sudo apt install oracle-java8-set-default
+# =========================================================================
+# ODBC
+# =========================================================================
 
-	echo "export SETUP_ODBC=installed" >> $SETUP_FILE
-fi
+# install os packages
+sudo apt-get install unixodbc-dev
+
+# ensure bash is sourced (with new addtions)
+echo -e "\e[31mRun\e[0m source ~/.bashrc"
