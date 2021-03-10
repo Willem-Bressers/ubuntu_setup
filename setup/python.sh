@@ -1,9 +1,6 @@
 # download installer
 sudo apt install -y python3-pip
 
-# install npm for jupyter lab extensions
-sudo apt install -y npm
-
 # install python environment packages
 pip3 install virtualenv virtualenvwrapper
 
