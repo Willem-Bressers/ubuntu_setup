@@ -36,9 +36,9 @@ sudo cp cuda/lib64/libcudnn* /usr/lib/cuda/lib64/
 sudo chmod a+r /usr/lib/cuda/include/cudnn.h /usr/lib/cuda/lib64/libcudnn*
 
 # export cuda environment variables
-echo -e "\n# CUDA variables" >> $HOME/.bashrc
-echo 'export LD_LIBRARY_PATH=/usr/lib/cuda/lib64:$LD_LIBRARY_PATH' >> $HOME/.bashrc
-echo 'export LD_LIBRARY_PATH=/usr/lib/cuda/include:$LD_LIBRARY_PATH' >> $HOME/.bashrc
+echo -e "\n# CUDA variables" >> $HOME/.zshrc
+echo 'export LD_LIBRARY_PATH=/usr/lib/cuda/lib64:$LD_LIBRARY_PATH' >> $HOME/.zshrc
+echo 'export LD_LIBRARY_PATH=/usr/lib/cuda/include:$LD_LIBRARY_PATH' >> $HOME/.zshrc
 
 # ensure bash is sourced (with new addtions)
-echo -e "\e[31mRun\e[0m source ~/.bashrc"
+echo -e "\e[31mRun\e[0m source ~/.zshrc"

@@ -26,8 +26,8 @@ sudo ACCEPT_EULA=Y apt-get install -y mssql-tools
 echo -e "\n# MSSQL tools" >> $HOME/.bash_profile
 echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> $HOME/.bash_profile
 
-echo -e "\n# MSSQL tools" >> $HOME/.bashrc
-echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> $HOME/.bashrc
+echo -e "\n# MSSQL tools" >> $HOME/.zshrc
+echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> $HOME/.zshrc
 
 # =========================================================================
 # ODBC
@@ -37,4 +37,4 @@ echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> $HOME/.bashrc
 sudo apt-get install unixodbc-dev
 
 # ensure bash is sourced (with new addtions)
-echo -e "\e[31mRun\e[0m source ~/.bashrc"
+echo -e "\e[31mRun\e[0m source ~/.zshrc"

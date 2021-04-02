@@ -4,15 +4,15 @@ sudo apt install -y python3-pip
 # install python environment packages
 pip3 install virtualenv virtualenvwrapper
 
-echo -e "\n# Add local bin (for the virtualenv)" >> $HOME/.bashrc
-echo -e "PATH=$PATH:$HOME/.local/bin" >> $HOME/.bashrc
+echo -e "\n# Add local bin (for the virtualenv)" >> $HOME/.zshrc
+echo -e "PATH=$PATH:$HOME/.local/bin" >> $HOME/.zshrc
 
-echo -e "\n# virtualenv and virtualenvwrapper environment variables" >> $HOME/.bashrc
-echo -e "export WORKON_HOME=$HOME/.virtualenvs" >> $HOME/.bashrc
-echo -e "export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3" >> $HOME/.bashrc
+echo -e "\n# virtualenv and virtualenvwrapper environment variables" >> $HOME/.zshrc
+echo -e "export WORKON_HOME=$HOME/.virtualenvs" >> $HOME/.zshrc
+echo -e "export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3" >> $HOME/.zshrc
 
-echo -e "\n# source the virtualenvwrapper code" >> $HOME/.bashrc
-echo -e "source $HOME/.local/bin/virtualenvwrapper.sh" >> $HOME/.bashrc
+echo -e "\n# source the virtualenvwrapper code" >> $HOME/.zshrc
+echo -e "source $HOME/.local/bin/virtualenvwrapper.sh" >> $HOME/.zshrc
 
 # ensure bash is sourced (with new addtions)
-echo -e "\e[31mRun\e[0m source ~/.bashrc"
+echo -e "\e[31mRun\e[0m source ~/.zshrc"
